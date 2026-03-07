@@ -1,13 +1,14 @@
 #!/bin/sh
 
-set -eux;
+set -eu
 
-if [ -n "$KINDLEGEN_TAR_LOCAL_FILE" ] && [ -f "$KINDLEGEN_TAR_LOCAL_FILE" ] && [ -s "$KINDLEGEN_TAR_LOCAL_FILE" ]; then
-    echo "Copying kindlegen tar from local file: $KINDLEGEN_TAR_LOCAL_FILE";
-else
-    echo "Downloading kindlegen from: ${KINDLEGEN_URL}${KINDLEGEN_FILE}";
-    curl -L -o "${KINDLEGEN_FILE}" "${KINDLEGEN_URL}${KINDLEGEN_FILE}";
-fi;
-tar -xzf ${KINDLEGEN_FILE} && \
-mv kindlegen /opt/AozoraEpub3;
-rm ${KINDLEGEN_FILE};
+kindlegen_url="https://archive.org/download/kindlegen2.9/kindlegen_linux_2.6_i386_v2_9.tar.gz"
+archive_path="/tmp/kindlegen_linux_2.6_i386_v2_9.tar.gz"
+extract_dir="/tmp/kindlegen"
+
+echo "Downloading kindlegen from: $kindlegen_url"
+curl -fsSL -o "$archive_path" "$kindlegen_url"
+mkdir -p "$extract_dir"
+tar -xzf "$archive_path" -C "$extract_dir"
+mv "$extract_dir/kindlegen" /opt/AozoraEpub3/
+rm -rf "$archive_path" "$extract_dir"
