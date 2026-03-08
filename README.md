@@ -15,7 +15,7 @@
 - kindlegen 2.9
 
 `narou-mod` と AozoraEpub3 はビルド時に GitHub Releases から取得します。
-kindlegen は固定 URL から取得します。
+kindlegen はまず固定 URL から取得し、失敗した場合のみローカルの fallback アーカイブを使います。
 
 ## 使い方
 
@@ -51,6 +51,16 @@ docker compose up --build -d
 
 起動後は `http://localhost:33000` にアクセスしてください。
 別のポート範囲を指定した場合は、先頭ポートにアクセスします。
+
+### kindlegen のローカル fallback
+
+`archive.org` からの取得に失敗した場合は、build context 内の次のファイルを使います。
+
+```text
+build/assets/kindlegen_linux_2.6_i386_v2_9.tar.gz
+```
+
+このファイルは Git 管理対象です。更新した場合は submodule 側の commit と親リポジトリ側の submodule 参照更新が必要です。
 
 ## 停止と削除
 

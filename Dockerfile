@@ -20,6 +20,7 @@ RUN set -eux; \
 COPY build/scripts/install_narou_mod.sh /usr/local/bin/install_narou_mod.sh
 COPY build/scripts/install_aozora_epub3.sh /usr/local/bin/install_aozora_epub3.sh
 COPY build/scripts/install_kindlegen.sh /usr/local/bin/install_kindlegen.sh
+COPY build /opt/build-resources
 
 RUN chmod +x /usr/local/bin/install_narou_mod.sh /usr/local/bin/install_aozora_epub3.sh /usr/local/bin/install_kindlegen.sh && \
     /usr/local/bin/install_narou_mod.sh "$NAROU_MOD_VERSION" && \
