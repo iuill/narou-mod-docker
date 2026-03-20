@@ -54,11 +54,7 @@ docker compose up --build -d
 
 ### kindlegen のローカル fallback
 
-`archive.org` のミラーから入手できます。
-
-```text
-https://archive.org/download/kindlegen2.9/kindlegen_linux_2.6_i386_v2_9.tar.gz
-```
+kindlegen は `archive.org` から入手します。
 
 `archive.org` からの取得に失敗した場合は、build context 内の次のファイルを使います。
 
