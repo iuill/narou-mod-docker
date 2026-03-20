@@ -54,13 +54,19 @@ docker compose up --build -d
 
 ### kindlegen のローカル fallback
 
+`archive.org` のミラーから入手できます。
+
+```text
+https://archive.org/download/kindlegen2.9/kindlegen_linux_2.6_i386_v2_9.tar.gz
+```
+
 `archive.org` からの取得に失敗した場合は、build context 内の次のファイルを使います。
 
 ```text
 build/assets/kindlegen_linux_2.6_i386_v2_9.tar.gz
 ```
 
-このファイルは Git 管理対象です。更新した場合は submodule 側の commit と親リポジトリ側の submodule 参照更新が必要です。
+このファイルは Git 管理対象から外しています。ローカルで fallback を使いたい場合は、この場所に手元で配置してください。
 
 ## 停止と削除
 
