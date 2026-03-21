@@ -3,24 +3,33 @@
 set -eu
 
 version="${1:-latest}"
+repo_url="https://github.com/ponponusa/narou-mod"
 
-if [ "$version" = "latest" ]; then
-    release_api_url="https://api.github.com/repos/ponponusa/narou-mod/releases/latest"
-else
-    release_api_url="https://api.github.com/repos/ponponusa/narou-mod/releases/tags/${version}"
-fi
+resolve_release_tag() {
+    requested_version="$1"
 
-gem_url="$(curl -fsSL "$release_api_url" | \
-    grep "browser_download_url" | \
-    grep "\.gem\"$" | \
-    grep -v "mingw" | \
-    sed -E 's/.*"browser_download_url": "(.*)".*/\1/' | \
+    if [ "$requested_version" = "latest" ]; then
+        curl -fsSIL -o /dev/null -w '%{url_effective}' "${repo_url}/releases/latest" | \
+            sed -E 's#^.*/tag/([^/?#]+).*$#\1#'
+        return
+    fi
+
+    printf '%s\n' "$requested_version"
+}
+
+release_tag="$(resolve_release_tag "$version")"
+release_page="$(curl -fsSL "${repo_url}/releases/tag/${release_tag}")"
+gem_file="$(printf '%s' "$release_page" | \
+    grep -o 'narou-mod-[^"[:space:]<>]*\.gem' | \
+    grep -v 'mingw' | \
     head -n 1)"
 
-if [ -z "$gem_url" ]; then
-    echo "Error: Could not find narou-mod gem download URL for ${version}." >&2
+if [ -z "$gem_file" ]; then
+    echo "Error: Could not find narou-mod gem filename for ${version} (resolved tag: ${release_tag})." >&2
     exit 1
 fi
+
+gem_url="${repo_url}/releases/download/${release_tag}/${gem_file}"
 
 echo "Downloading narou-mod gem from: $gem_url"
 curl -fsSL -o /tmp/narou-mod.gem "$gem_url"
