@@ -7,6 +7,7 @@ services:
       args:
         NAROU_MOD_VERSION: ${NAROU_MOD_VERSION:-2.0.3-646d9ad}
         AOZORAEPUB3_VERSION: ${AOZORAEPUB3_VERSION:-latest}
+        INSTALL_KINDLEGEN: ${INSTALL_KINDLEGEN:-0}
     ports:
       - "127.0.0.1:${HOST_PORT_RANGE:-33000-33001}:33000-33001"
     restart: unless-stopped
