@@ -15,7 +15,7 @@
 - kindlegen 2.9
 
 `narou-mod` と AozoraEpub3 はビルド時に GitHub Releases から取得します。
-kindlegen はまず固定 URL から取得し、失敗した場合のみローカルの fallback アーカイブを使います。
+kindlegen は既定ではインストールしません。必要な場合だけ build arg / 環境変数で opt-in し、取得に失敗した場合のみローカルの fallback アーカイブを使います。
 
 ## 使い方
 
@@ -34,12 +34,14 @@ HOST_NOVEL_PATH=./novel
 HOST_PORT_RANGE=33000-33001
 NAROU_MOD_VERSION=2.0.3-646d9ad
 AOZORAEPUB3_VERSION=latest
+INSTALL_KINDLEGEN=0
 ```
 
 - `HOST_NOVEL_PATH`: 小説データの保存先
 - `HOST_PORT_RANGE`: 2つ連続したポート範囲。先頭が Web UI、次が websocket 用
 - `NAROU_MOD_VERSION`: `latest` または GitHub Releases のタグ
 - `AOZORAEPUB3_VERSION`: `latest` または GitHub Releases のタグ
+- `INSTALL_KINDLEGEN`: `1` のときだけ kindlegen 2.9 を追加でインストール
 
 Windows で絶対パスを使うなら、`C:/narou/novel` のように `/` 区切りを推奨します。
 
@@ -54,7 +56,7 @@ docker compose up --build -d
 
 ### kindlegen のローカル fallback
 
-kindlegen は `archive.org` から入手します。
+kindlegen は `INSTALL_KINDLEGEN=1` のときだけ `archive.org` から入手します。
 
 `archive.org` からの取得に失敗した場合は、build context 内の次のファイルを使います。
 

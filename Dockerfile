@@ -6,6 +6,7 @@ ENV PATH=$BUNDLE_PATH/bin:$PATH
 
 ARG NAROU_MOD_VERSION=latest
 ARG AOZORAEPUB3_VERSION=latest
+ARG INSTALL_KINDLEGEN=0
 
 RUN set -eux; \
     apt-get update; \
@@ -25,7 +26,11 @@ COPY build /opt/build-resources
 RUN chmod +x /usr/local/bin/install_narou_mod.sh /usr/local/bin/install_aozora_epub3.sh /usr/local/bin/install_kindlegen.sh && \
     /usr/local/bin/install_narou_mod.sh "$NAROU_MOD_VERSION" && \
     /usr/local/bin/install_aozora_epub3.sh "$AOZORAEPUB3_VERSION" && \
-    /usr/local/bin/install_kindlegen.sh
+    if [ "$INSTALL_KINDLEGEN" = "1" ]; then \
+      /usr/local/bin/install_kindlegen.sh; \
+    else \
+      echo "Skipping kindlegen installation (INSTALL_KINDLEGEN=$INSTALL_KINDLEGEN)."; \
+    fi
 
 FROM ruby:3.4.8-slim-bookworm
 
